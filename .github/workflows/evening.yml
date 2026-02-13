@@ -1,0 +1,20 @@
+name: Good Evening
+
+on:
+  schedule:
+    # 17:00 UTC = 6:00 PM Berlin (CET). During CEST (summer), adjust to 16:00 UTC.
+    - cron: "0 17 * * 1-5"
+  workflow_dispatch:
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npx tsx src/index.ts evening
+        env:
+          SLACK_USER_TOKEN: ${{ secrets.SLACK_USER_TOKEN }}
+          SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}

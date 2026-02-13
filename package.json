@@ -1,0 +1,13 @@
+{
+  "name": "heybye",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "send:morning": "npx tsx src/index.ts morning",
+    "send:evening": "npx tsx src/index.ts evening"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0"
+  }
+}
