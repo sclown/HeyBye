@@ -9,6 +9,7 @@ on:
 jobs:
   send:
     runs-on: ubuntu-latest
+    environment: remote
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

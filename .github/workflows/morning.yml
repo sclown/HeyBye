@@ -3,12 +3,13 @@ name: Good Morning
 on:
   schedule:
     # 8:00 UTC = 9:00 AM Berlin (CET). During CEST (summer), adjust to 7:00 UTC.
-    - cron: "0 9 * * 1-5"
+    - cron: "0 8 * * 1-5"
   workflow_dispatch:
 
 jobs:
   send:
     runs-on: ubuntu-latest
+    environment: remote
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
