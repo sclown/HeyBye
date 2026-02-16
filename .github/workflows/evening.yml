@@ -2,8 +2,8 @@ name: Good Evening
 
 on:
   schedule:
-    # 17:00 UTC = 6:00 PM Berlin (CET). During CEST (summer), adjust to 16:00 UTC.
-    - cron: "0 17 * * 1-5"
+    # 16:40 UTC (~6:00 PM Berlin with ~20min GH Actions delay)
+    - cron: "40 16 * * 1-5"
   workflow_dispatch:
 
 jobs:
