@@ -2,8 +2,10 @@
 
 Automated Slack greeting messages sent **as yourself** (not a bot) via GitHub Actions.
 
-- **9:00 AM Berlin** — "Good morning! :wave:"
-- **6:00 PM Berlin** — "Have a nice evening! :wave:"
+- **~9:00 AM Berlin** — "Good morning!" with random sunrise emoji
+  - Monday: "Good morning! Have a great start of the week!"
+- **~6:00 PM Berlin** — "Have a nice evening!" with random evening emoji
+  - Friday: "Have a nice weekend!"
 
 Weekdays only.
 
@@ -42,4 +44,4 @@ SLACK_USER_TOKEN=xoxp-... SLACK_CHANNEL_ID=C... npm run send:morning
 
 ## DST Note
 
-The cron schedules use UTC. During CET (winter), 8:00 UTC = 9:00 AM Berlin. During CEST (summer), 9:00 AM Berlin = 7:00 UTC. Adjust the cron values in the workflow files when the clocks change, or accept the ~1 hour offset.
+The cron schedules use UTC and are set to 7:40 UTC (morning) and 16:40 UTC (evening) to account for ~20 minute GitHub Actions delay. During CET (winter), this targets ~9:00 AM and ~6:00 PM Berlin. During CEST (summer), adjust the cron values by -1 hour, or accept the ~1 hour offset.
