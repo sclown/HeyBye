@@ -8,6 +8,7 @@
     "send:evening": "npx tsx src/index.ts evening"
   },
   "devDependencies": {
+    "@types/node": "^25.3.5",
     "tsx": "^4.19.0"
   }
 }

@@ -13,10 +13,34 @@ if (!token || !channel) {
   process.exit(1);
 }
 
-const messages = {
-  morning: "Good morning! :wave:",
-  evening: "Have a nice evening! :wave:",
-};
+const day = new Date().getDay();
+const isMonday = day === 1;
+const isFriday = day === 5;
+
+const morningEmojis = [
+  ":sunrise:",
+  ":sunrise_over_mountains:",
+  ":city_sunrise:",
+  ":sunny:"
+];
+const morningEmoji = morningEmojis[Math.floor(Math.random() * morningEmojis.length)];
+const eveningEmojis = [
+  ":city_sunset:",
+  ":night_with_stars:",
+  ":bridge_at_night:",
+  ":cityscape:",
+  ":milky_way:"
+];
+const eveningEmoji = eveningEmojis[Math.floor(Math.random() * eveningEmojis.length)];
+
+let message: string;
+if (mode === "morning" && isMonday) {
+  message = `Good morning! Have a great start of the week! ${morningEmoji}`;
+} else if (mode === "evening" && isFriday) {
+  message = `Have a nice weekend! ${eveningEmoji}`;
+} else {
+  message = mode === "morning" ? `Good morning! ${morningEmoji}` : `Have a nice evening! ${eveningEmoji}`;
+}
 
 const response = await fetch("https://slack.com/api/chat.postMessage", {
   method: "POST",
@@ -26,7 +50,7 @@ const response = await fetch("https://slack.com/api/chat.postMessage", {
   },
   body: JSON.stringify({
     channel,
-    text: messages[mode],
+    text: message,
   }),
 });
 
@@ -38,3 +62,5 @@ if (!data.ok) {
 }
 
 console.log(`Sent ${mode} message to channel ${channel}`);
+
+export {};
