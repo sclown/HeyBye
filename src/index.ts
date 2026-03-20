@@ -18,20 +18,21 @@ const isMonday = day === 1;
 const isFriday = day === 5;
 
 const morningEmojis = [
-  ":sunrise:",
-  ":sunrise_over_mountains:",
   ":city_sunrise:",
+  ":sunrise:",
+  ":coffee:",
+  ":sunrise_over_mountains:",
   ":sunny:"
 ];
-const morningEmoji = morningEmojis[Math.floor(Math.random() * morningEmojis.length)];
+const morningEmoji = morningEmojis[day - 1];
 const eveningEmojis = [
   ":city_sunset:",
   ":night_with_stars:",
   ":bridge_at_night:",
   ":cityscape:",
-  ":milky_way:"
+  ":sparkles:"
 ];
-const eveningEmoji = eveningEmojis[Math.floor(Math.random() * eveningEmojis.length)];
+const eveningEmoji = eveningEmojis[day - 1];
 
 let message: string;
 if (mode === "morning" && isMonday) {
