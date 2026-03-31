@@ -44,4 +44,4 @@ SLACK_USER_TOKEN=xoxp-... SLACK_CHANNEL_ID=C... npm run send:morning
 
 ## DST Note
 
-The cron schedules use UTC and are set to 7:40 UTC (morning) and 16:40 UTC (evening) to account for ~20 minute GitHub Actions delay. During CET (winter), this targets ~9:00 AM and ~6:00 PM Berlin. During CEST (summer), adjust the cron values by -1 hour, or accept the ~1 hour offset.
+The cron schedules use UTC and are set to 6:40 UTC (morning) and 15:40 UTC (evening) to account for ~20 minute GitHub Actions delay. During CEST (summer), this targets ~9:00 AM and ~6:00 PM Berlin. During CET (winter), adjust the cron values by +1 hour, or accept the ~1 hour offset.

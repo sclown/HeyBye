@@ -2,8 +2,8 @@ name: Good Morning
 
 on:
   schedule:
-    # 7:40 UTC (~9:00 AM Berlin with ~20min GH Actions delay)
-    - cron: "40 7 * * 1-5"
+    # 6:40 UTC (~9:00 AM Berlin CEST with ~20min GH Actions delay)
+    - cron: "40 6 * * 1-5"
   workflow_dispatch:
 
 jobs:
