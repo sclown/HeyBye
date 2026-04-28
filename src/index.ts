@@ -1,7 +1,9 @@
-const mode = process.argv[2] as "morning" | "evening" | undefined;
+import { buildMessage, sendToSlack, type Mode } from "./message.js";
+
+const mode = process.argv[2] as Mode | undefined;
 
 if (mode !== "morning" && mode !== "evening") {
-  console.error('Usage: npx tsx src/index.ts <morning|evening>');
+  console.error("Usage: npx tsx src/index.ts <morning|evening>");
   process.exit(1);
 }
 
@@ -13,55 +15,10 @@ if (!token || !channel) {
   process.exit(1);
 }
 
-const day = new Date().getDay();
-const isMonday = day === 1;
-const isFriday = day === 5;
-
-const morningEmojis = [
-  ":city_sunrise:",
-  ":sunrise:",
-  ":coffee:",
-  ":sunrise_over_mountains:",
-  ":sunny:"
-];
-const morningEmoji = morningEmojis[day - 1];
-const eveningEmojis = [
-  ":city_sunset:",
-  ":night_with_stars:",
-  ":bridge_at_night:",
-  ":cityscape:",
-  ":sparkles:"
-];
-const eveningEmoji = eveningEmojis[day - 1];
-
-let message: string;
-if (mode === "morning" && isMonday) {
-  message = `Good morning! Have a great start of the week! ${morningEmoji}`;
-} else if (mode === "evening" && isFriday) {
-  message = `Have a nice weekend! ${eveningEmoji}`;
-} else {
-  message = mode === "morning" ? `Good morning! ${morningEmoji}` : `Have a nice evening! ${eveningEmoji}`;
-}
-
-const response = await fetch("https://slack.com/api/chat.postMessage", {
-  method: "POST",
-  headers: {
-    Authorization: `Bearer ${token}`,
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    channel,
-    text: message,
-  }),
-});
-
-const data = await response.json();
-
-if (!data.ok) {
-  console.error("Slack API error:", data.error);
+try {
+  await sendToSlack(token, channel, buildMessage(mode, new Date()));
+  console.log(`Sent ${mode} message to channel ${channel}`);
+} catch (err) {
+  console.error((err as Error).message);
   process.exit(1);
 }
-
-console.log(`Sent ${mode} message to channel ${channel}`);
-
-export {};

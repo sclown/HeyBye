@@ -1,10 +1,10 @@
 # HeyBye
 
-Automated Slack greeting messages sent **as yourself** (not a bot) via GitHub Actions.
+Automated Slack greeting messages sent **as yourself** (not a bot) via a Cloudflare Worker on cron triggers.
 
-- **~9:00 AM Berlin** — "Good morning!" with random sunrise emoji
+- **9:00 AM Berlin** — "Good morning!" with a daily emoji
   - Monday: "Good morning! Have a great start of the week!"
-- **~6:00 PM Berlin** — "Have a nice evening!" with random evening emoji
+- **6:00 PM Berlin** — "Have a nice evening!" with a daily emoji
   - Friday: "Have a nice weekend!"
 
 Weekdays only.
@@ -22,26 +22,42 @@ Weekdays only.
 
 Open Slack, right-click the channel name → "View channel details" → copy the Channel ID at the bottom.
 
-### 3. Add GitHub Secrets
-
-In your repo → Settings → Secrets and variables → Actions, add:
-
-| Secret             | Value                        |
-| ------------------ | ---------------------------- |
-| `SLACK_USER_TOKEN` | Your `xoxp-...` user token   |
-| `SLACK_CHANNEL_ID` | Target channel ID (`C...`)   |
-
-### 4. Push & Go
-
-The workflows run automatically on weekdays. You can also trigger them manually from the Actions tab (`workflow_dispatch`).
-
-## Local Testing
+### 3. Deploy the Worker
 
 ```bash
 npm install
+npx wrangler login
+npx wrangler secret put SLACK_USER_TOKEN   # paste your xoxp-... token
+npx wrangler secret put SLACK_CHANNEL_ID   # paste your C... channel ID
+npm run deploy
+```
+
+The worker will fire at the cron times in `wrangler.jsonc`.
+
+## Local Testing
+
+CLI (sends a real message):
+
+```bash
 SLACK_USER_TOKEN=xoxp-... SLACK_CHANNEL_ID=C... npm run send:morning
+```
+
+Worker dev (simulates cron locally):
+
+```bash
+npm run dev
+# in another terminal:
+curl "http://localhost:8787/__scheduled?cron=0+7+*+*+1-5"   # morning
+curl "http://localhost:8787/__scheduled?cron=0+16+*+*+1-5"  # evening
+```
+
+For local dev, secrets come from a `.dev.vars` file (gitignored):
+
+```
+SLACK_USER_TOKEN=xoxp-...
+SLACK_CHANNEL_ID=C...
 ```
 
 ## DST Note
 
-The cron schedules use UTC and are set to 6:40 UTC (morning) and 15:40 UTC (evening) to account for ~20 minute GitHub Actions delay. During CEST (summer), this targets ~9:00 AM and ~6:00 PM Berlin. During CET (winter), adjust the cron values by +1 hour, or accept the ~1 hour offset.
+Worker cron is in UTC. Defaults (`0 7` and `0 16`) target 09:00 and 18:00 Berlin during **CEST** (summer). During **CET** (winter), bump both hours by +1 in `wrangler.jsonc` and redeploy.

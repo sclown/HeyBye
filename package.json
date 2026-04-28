@@ -5,10 +5,14 @@
   "type": "module",
   "scripts": {
     "send:morning": "npx tsx src/index.ts morning",
-    "send:evening": "npx tsx src/index.ts evening"
+    "send:evening": "npx tsx src/index.ts evening",
+    "dev": "wrangler dev --test-scheduled",
+    "deploy": "wrangler deploy"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260426.1",
     "@types/node": "^25.3.5",
-    "tsx": "^4.19.0"
+    "tsx": "^4.19.0",
+    "wrangler": "^4.85.0"
   }
 }

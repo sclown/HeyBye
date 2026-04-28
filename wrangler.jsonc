@@ -1,0 +1,12 @@
+{
+  "$schema": "https://unpkg.com/wrangler@latest/config-schema.json",
+  "name": "heybye",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-04-28",
+  "triggers": {
+    "crons": [
+      "0 7 * * 1-5",
+      "0 16 * * 1-5"
+    ]
+  }
+}
