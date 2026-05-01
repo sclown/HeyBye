@@ -3,6 +3,9 @@
   "name": "heybye",
   "main": "src/worker.ts",
   "compatibility_date": "2026-04-28",
+  "vars": {
+    "ENABLED": "true"
+  },
   "triggers": {
     "crons": [
       "0 7 * * 1-5",
