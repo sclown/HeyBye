@@ -7,6 +7,8 @@ export interface Env {
   ENABLED: string;
 }
 
+const MAX_JITTER_MINUTES = 5;
+
 export default {
   async scheduled(
     controller: ScheduledController,
@@ -18,9 +20,16 @@ export default {
       return;
     }
     const mode = controller.cron.startsWith("0 7") ? "morning" : "evening";
-    const message = buildMessage(mode, new Date());
+    const delaySeconds =
+      1 + Math.floor(Math.random() * MAX_JITTER_MINUTES * 60);
+    const postAt = Math.floor(Date.now() / 1000) + delaySeconds;
     ctx.waitUntil(
-      sendToSlack(env.SLACK_USER_TOKEN, env.SLACK_CHANNEL_ID, message),
+      sendToSlack(
+        env.SLACK_USER_TOKEN,
+        env.SLACK_CHANNEL_ID,
+        buildMessage(mode, new Date()),
+        postAt,
+      ),
     );
   },
 } satisfies ExportedHandler<Env>;

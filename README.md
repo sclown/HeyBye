@@ -28,9 +28,17 @@ Open Slack, right-click the channel name → "View channel details" → copy the
 npm install
 npx wrangler login
 npx wrangler secret put SLACK_USER_TOKEN   # paste your xoxp-... token
-npx wrangler secret put SLACK_CHANNEL_ID   # paste your C... channel ID
 npm run deploy
 ```
+
+Then in the **Cloudflare dashboard** → Workers & Pages → `heybye` → **Settings** → **Variables and Secrets**, add two **plain text** variables:
+
+| Name               | Value          |
+| ------------------ | -------------- |
+| `SLACK_CHANNEL_ID` | `C...`         |
+| `ENABLED`          | `true`         |
+
+`wrangler.jsonc` has `keep_vars: true`, so future `wrangler deploy` runs won't overwrite values you set in the dashboard. Toggle `ENABLED` to `false` any time to silence the worker without redeploying.
 
 The worker will fire at the cron times in `wrangler.jsonc`.
 
@@ -51,11 +59,12 @@ curl "http://localhost:8787/__scheduled?cron=0+7+*+*+1-5"   # morning
 curl "http://localhost:8787/__scheduled?cron=0+16+*+*+1-5"  # evening
 ```
 
-For local dev, secrets come from a `.dev.vars` file (gitignored):
+For local dev, secrets/vars come from a `.dev.vars` file (gitignored):
 
 ```
 SLACK_USER_TOKEN=xoxp-...
 SLACK_CHANNEL_ID=C...
+ENABLED=true
 ```
 
 ## DST Note

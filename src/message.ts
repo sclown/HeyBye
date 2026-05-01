@@ -36,14 +36,21 @@ export async function sendToSlack(
   token: string,
   channel: string,
   text: string,
+  postAt?: number,
 ): Promise<void> {
-  const response = await fetch("https://slack.com/api/chat.postMessage", {
+  const endpoint = postAt
+    ? "https://slack.com/api/chat.scheduleMessage"
+    : "https://slack.com/api/chat.postMessage";
+  const body: Record<string, unknown> = { channel, text };
+  if (postAt) body.post_at = postAt;
+
+  const response = await fetch(endpoint, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ channel, text }),
+    body: JSON.stringify(body),
   });
 
   const data = (await response.json()) as { ok: boolean; error?: string };
