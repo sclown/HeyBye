@@ -7,7 +7,7 @@ export interface Env {
   ENABLED: string;
 }
 
-const MAX_JITTER_MINUTES = 5;
+const MAX_JITTER_MINUTES = 15;
 
 export default {
   async scheduled(
